@@ -1,0 +1,14 @@
+server:
+  port: 8080
+  bind-address: "0.0.0.0"
+  access-log:
+    format: "%h %l %u %t %r %s %b %{Referer}i %T"
+
+db:
+  source: "jdbc"
+  connection:
+    url: "jdbc:postgresql://localhost:5432/db?currentSchema=public"
+    username: "root"
+    password: "root"
+flyway:
+  location: "db.migration"
