@@ -1,6 +1,5 @@
 server:
   port: 8080
-  bind-address: "0.0.0.0"
   access-log:
     format: "%h %l %u %t %r %s %b %{Referer}i %T"
 
@@ -12,3 +11,24 @@ db:
     password: "root"
 flyway:
   location: "db.migration"
+
+mp.messaging:
+  incoming:
+    users:
+      connector: helidon-kafka
+      topic: users
+      auto.offset.reset: latest
+      enable.auto.commit: false
+      group:
+        id: users-projector
+  outgoing:
+    users-out:
+      connector: helidon-kafka
+      topic: users
+  connector:
+    helidon-kafka:
+      bootstrap.servers: localhost:9092
+      key.serializer: org.apache.kafka.common.serialization.StringSerializer
+      value.serializer: com.github.zilv1nas.config.serialization.KafkaEventSerializer
+      key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value.deserializer: com.github.zilv1nas.config.serialization.KafkaEventDeserializer

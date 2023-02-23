@@ -3,8 +3,8 @@ package com.github.zilv1nas.config
 import io.helidon.config.Config
 import org.flywaydb.core.Flyway
 
-class FlywayConfig(private val config: Config) {
-    fun runMigrations() {
+class FlywayConfig(private val config: Config) : InitializingComponent {
+    override fun start() {
         val dbConfig = config["db.connection"]
 
         val flyway = Flyway

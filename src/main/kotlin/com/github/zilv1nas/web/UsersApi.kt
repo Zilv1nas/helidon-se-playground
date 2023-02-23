@@ -1,6 +1,7 @@
 package com.github.zilv1nas.web
 
 import com.github.zilv1nas.repository.UsersRepository
+import com.github.zilv1nas.service.UserEventsProducer
 import com.github.zilv1nas.web.model.UserRequest
 import com.github.zilv1nas.web.model.UsersResponse
 import io.helidon.webserver.Handler
@@ -10,7 +11,10 @@ import io.helidon.webserver.ServerResponse
 import io.helidon.webserver.Service
 import java.util.UUID
 
-class UsersApi(private val usersRepository: UsersRepository) : Service {
+class UsersApi(
+    private val usersRepository: UsersRepository,
+    private val userEventsProducer: UserEventsProducer,
+) : Service {
     override fun update(rules: Routing.Rules) {
         with(rules) {
             post("/v1/users", handler(::saveUser))
@@ -19,9 +23,8 @@ class UsersApi(private val usersRepository: UsersRepository) : Service {
     }
 
     private fun saveUser(request: ServerRequest, response: ServerResponse, userRequest: UserRequest) {
-        usersRepository.save(userRequest.toUser(UUID.randomUUID())).thenAccept {
-            response.send()
-        }
+        val event = userRequest.toEvent(UUID.randomUUID())
+        response.send(userEventsProducer.publish(event), Void::class.java)
     }
 
     private fun getUsers(request: ServerRequest, response: ServerResponse) {

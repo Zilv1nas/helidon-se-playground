@@ -22,6 +22,9 @@ dependencies {
     implementation(platform("io.helidon:helidon-dependencies:3.1.1"))
     implementation("io.helidon.config:helidon-config-yaml")
 
+    implementation("io.helidon.messaging:helidon-messaging")
+    implementation("io.helidon.messaging.kafka:helidon-messaging-kafka")
+
     implementation("io.helidon.webserver:helidon-webserver")
     implementation("io.helidon.webserver:helidon-webserver-access-log")
     implementation("io.helidon.media:helidon-media-jackson")
