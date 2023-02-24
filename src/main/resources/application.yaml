@@ -9,6 +9,9 @@ db:
     url: "jdbc:postgresql://localhost:5432/db?currentSchema=public"
     username: "root"
     password: "root"
+  health:
+    isNamedstatement: false
+    statement: "SELECT 1"
 flyway:
   location: "db.migration"
 

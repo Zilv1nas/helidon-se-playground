@@ -8,10 +8,10 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 
-class UserEventsProducer(
-    override val emitter: Emitter<UserCreated> = Emitter.create(Channel.create("users-out")),
-) : EventProducer<UserCreated> {
+class UserEventsProducer : EventProducer<UserCreated> {
     private val logger: Logger = LoggerFactory.getLogger(UserEventsProducer::class.java)
+
+    override val emitter: Emitter<UserCreated> = Emitter.create(Channel.create("users-out"))
 
     fun publish(event: UserCreated): Single<Void> {
         logger.info("Publishing event: $event")

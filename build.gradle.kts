@@ -30,8 +30,11 @@ dependencies {
     implementation("io.helidon.media:helidon-media-jackson")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
+    implementation("io.helidon.health:helidon-health-checks")
+
     implementation("io.helidon.dbclient:helidon-dbclient")
     implementation("io.helidon.dbclient:helidon-dbclient-jdbc")
+    implementation("io.helidon.dbclient:helidon-dbclient-health")
     implementation("org.postgresql:postgresql:42.5.3")
     implementation("org.flywaydb:flyway-core:9.14.1")
 

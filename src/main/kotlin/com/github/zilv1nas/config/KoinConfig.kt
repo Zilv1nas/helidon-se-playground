@@ -14,6 +14,7 @@ import io.helidon.webserver.Service
 import org.koin.core.KoinApplication
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.withOptions
 import org.koin.dsl.module
 
@@ -30,14 +31,6 @@ object KoinConfig {
                     .build()
             }
 
-            single { FlywayConfig(config = get()) } withOptions {
-                bind<InitializingComponent>()
-            }
-
-            single { MessagingConfig(config = get(), producers = getAll(), consumers = getAll()) } withOptions {
-                bind<InitializingComponent>()
-            }
-
             single {
                 AppWebServer(
                     config = get(),
@@ -47,17 +40,35 @@ object KoinConfig {
                 )
             }
 
-            single { UsersRepository(dbClient = get()) }
+            single {
+                MessagingConfig(
+                    config = get(),
+                    producers = getAll(),
+                    consumers = getAll()
+                )
+            } withOptions {
+                bind<InitializingComponent>()
+            }
 
-            single { UsersApi(usersRepository = get(), userEventsProducer = get()) } withOptions {
+            singleOf(HealthConfig::configure) {
                 bind<Service>()
             }
 
-            single { UserEventsProducer() } withOptions {
+            singleOf(::FlywayConfig) {
+                bind<InitializingComponent>()
+            }
+
+            singleOf(::UsersRepository)
+
+            singleOf(::UsersApi) {
+                bind<Service>()
+            }
+
+            singleOf(::UserEventsProducer) {
                 bind<EventProducer<UserCreated>>()
             }
 
-            single { UsersProjector(usersRepository = get()) } withOptions {
+            singleOf(::UsersProjector) {
                 bind<EventConsumer<UserCreated>>()
             }
         }
