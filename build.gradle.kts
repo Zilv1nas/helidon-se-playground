@@ -31,6 +31,8 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
     implementation("io.helidon.health:helidon-health-checks")
+    implementation("io.helidon.tracing:helidon-tracing")
+    implementation("io.helidon.tracing:helidon-tracing-jaeger")
 
     implementation("io.helidon.dbclient:helidon-dbclient")
     implementation("io.helidon.dbclient:helidon-dbclient-jdbc")

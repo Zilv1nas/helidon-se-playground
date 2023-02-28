@@ -24,7 +24,7 @@ class UsersApi(
 
     private fun saveUser(request: ServerRequest, response: ServerResponse, userRequest: UserRequest) {
         val event = userRequest.toEvent(UUID.randomUUID())
-        response.send(userEventsProducer.publish(event), Void::class.java)
+        response.send(userEventsProducer.publish(event, request.spanContext().orElse(null)), Void::class.java)
     }
 
     private fun getUsers(request: ServerRequest, response: ServerResponse) {

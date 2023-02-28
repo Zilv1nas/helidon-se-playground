@@ -1,6 +1,7 @@
 package com.github.zilv1nas.config
 
 import com.github.zilv1nas.config.serialization.ObjectMapperFactory
+import com.github.zilv1nas.config.tracing.DbClientTracing
 import com.github.zilv1nas.repository.UsersRepository
 import com.github.zilv1nas.service.EventConsumer
 import com.github.zilv1nas.service.EventProducer
@@ -28,6 +29,7 @@ object KoinConfig {
             single {
                 DbClient.builder()
                     .config(get<Config>().get("db"))
+                    .addService(DbClientTracing.create())
                     .build()
             }
 

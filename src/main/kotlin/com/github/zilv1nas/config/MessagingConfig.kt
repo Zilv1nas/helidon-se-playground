@@ -3,6 +3,7 @@ package com.github.zilv1nas.config
 import com.github.zilv1nas.service.EventConsumer
 import com.github.zilv1nas.service.EventProducer
 import com.github.zilv1nas.service.model.Event
+import com.github.zilv1nas.service.model.EventEnvelope
 import io.helidon.config.Config
 import io.helidon.messaging.Messaging
 import io.helidon.messaging.connectors.kafka.KafkaConnector

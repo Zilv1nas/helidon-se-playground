@@ -15,6 +15,15 @@ db:
 flyway:
   location: "db.migration"
 
+tracing:
+  service: helidon-se-playground
+  protocol: "http"
+  host: "localhost"
+  port: 14250
+  paths:
+    - path: "/health"
+      enabled: false
+
 mp.messaging:
   incoming:
     users:

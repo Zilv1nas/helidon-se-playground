@@ -8,7 +8,7 @@ import io.helidon.dbclient.DbClient
 class UsersRepository(private val dbClient: DbClient) {
     fun save(user: User): Single<Long> {
         val result = dbClient.execute {
-            it.createInsert("INSERT INTO users (id, email) VALUES (:id, :email)")
+            it.createInsert("INSERT INTO users (id, email) VALUES (:id, :email) ON CONFLICT DO NOTHING")
                 .params(user.asParams())
                 .execute()
         }
