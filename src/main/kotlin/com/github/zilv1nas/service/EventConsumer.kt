@@ -21,17 +21,15 @@ abstract class EventConsumer<E : Event>(
             logger.info("Consuming event: $event")
 
             val spanContext = extractTracing(message.payload.metadata)
-            val tracingCallbacks = spanContext?.let {
-                trace(channel.name(), it)
-            }
+            val span = trace(channel.name(), spanContext)
 
             try {
                 on(event)
                 message.ack()
-                tracingCallbacks?.let { it.onSuccess() }
+                span.end()
             } catch (e: Throwable) {
                 logger.error("Could not consume event $event", e)
-                tracingCallbacks?.let { it.onFailure(e) }
+                span.end(e)
                 throw e
             }
         }

@@ -34,6 +34,8 @@ dependencies {
     implementation("io.helidon.tracing:helidon-tracing")
     implementation("io.helidon.tracing:helidon-tracing-jaeger")
 
+    implementation("io.helidon.metrics:helidon-metrics")
+
     implementation("io.helidon.dbclient:helidon-dbclient")
     implementation("io.helidon.dbclient:helidon-dbclient-jdbc")
     implementation("io.helidon.dbclient:helidon-dbclient-health")

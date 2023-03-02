@@ -20,19 +20,19 @@ abstract class EventProducer<E : Event>(
 
     fun publish(event: E, spanContext: SpanContext? = null): Single<Void> {
         logger.info("Publishing event: $event")
-        val (onTraceSuccess, onTraceFailure) = trace(channel.name(), spanContext)
-        val eventEnvelope = EventEnvelope.create(event, injectTracing(spanContext))
+        val span = trace(channel.name(), spanContext)
+        val eventEnvelope = EventEnvelope.create(event, injectTracing(span.context()))
 
         val resultFuture = CompletableFuture<Void>()
         val message = Message.of(
             eventEnvelope,
             {
-                onTraceSuccess()
+                span.end()
                 resultFuture.complete(null)
                 CompletableFuture.completedFuture(null)
             },
             { throwable ->
-                onTraceFailure(throwable)
+                span.end(throwable)
                 resultFuture.completeExceptionally(throwable)
                 CompletableFuture.completedFuture(null)
             },

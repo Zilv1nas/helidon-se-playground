@@ -2,11 +2,12 @@ package com.github.zilv1nas.config.tracing
 
 import com.github.zilv1nas.config.tracing.Tracing.register
 import io.helidon.tracing.HeaderConsumer
+import io.helidon.tracing.Span
 import io.helidon.tracing.SpanContext
 import io.helidon.tracing.Tag
 
 interface WithMessagingConsumerTracing {
-    fun trace(channelName: String, spanContext: SpanContext?): TracingCallbacks {
+    fun trace(channelName: String, spanContext: SpanContext?): Span {
         val tracer = Tracing.tracer()
 
         val spanBuilder = tracer.spanBuilder("consume event from $channelName")
@@ -20,7 +21,9 @@ interface WithMessagingConsumerTracing {
         span.tag(Tag.create("messaging.system", "kafka"))
         span.tag(Tag.create("span.kind", "consumer"))
 
-        return TracingCallbacks(span::end, span::end)
+        span.context().register()
+
+        return span
     }
 
     @Suppress("UNCHECKED_CAST")

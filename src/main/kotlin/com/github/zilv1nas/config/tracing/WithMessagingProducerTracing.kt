@@ -2,6 +2,7 @@ package com.github.zilv1nas.config.tracing
 
 import io.helidon.tracing.HeaderConsumer
 import io.helidon.tracing.HeaderProvider
+import io.helidon.tracing.Span
 import io.helidon.tracing.SpanContext
 import io.helidon.tracing.Tag
 
@@ -16,7 +17,7 @@ interface WithMessagingProducerTracing {
         return traceHeaders
     }
 
-    fun trace(channelName: String, spanContext: SpanContext?): TracingCallbacks {
+    fun trace(channelName: String, spanContext: SpanContext?): Span {
         val tracer = Tracing.tracer()
 
         val spanBuilder = tracer.spanBuilder("produce event to $channelName")
@@ -30,6 +31,6 @@ interface WithMessagingProducerTracing {
         span.tag(Tag.create("messaging.system", "kafka"))
         span.tag(Tag.create("span.kind", "producer"))
 
-        return TracingCallbacks(span::end, span::end)
+        return span
     }
 }
